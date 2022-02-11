@@ -38,8 +38,8 @@ export default class RideScreen extends Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
 
     this.setState({
-      /*status === "granted" is true when user has granted permission
-          status === "granted" is false when user has not granted the permission
+      /*status === "granted" é verdadeiro se o usuário concedeu permissão
+          status === "granted" é falso se o usuário não concedeu permissão
         */
       hasCameraPermissions: status === "granted",
       domState: "scanner",
@@ -150,7 +150,7 @@ export default class RideScreen extends Component {
   };
 
   assignBike = async (bikeId, userId, bikeType, userName) => {
-    //add a transaction
+    // adicionar uma transação
     db.collection("transactions").add({
       user_id: userId,
       user_name: userName,
@@ -159,27 +159,27 @@ export default class RideScreen extends Component {
       date: firebase.firestore.Timestamp.now().toDate(),
       transaction_type: "rented"
     });
-    //change bike status
+    // mudar o status da bicicleta
     db.collection("bicycles")
       .doc(bikeId)
       .update({
         is_bike_available: false
       });
-    //change value  of bike assigned for user
+    // mudar o valor da bicicleta alugada pelo usuário
     db.collection("users")
       .doc(userId)
       .update({
         bike_assigned: true
       });
 
-    // Updating local state
+    // atualizando estado local
     this.setState({
       bikeId: ""
     });
   };
 
   returnBike = async (bikeId, userId, bikeType, userName) => {
-    //add a transaction
+    // adicionar uma transação
     db.collection("transactions").add({
       user_id: userId,
       user_name: userName,
@@ -188,20 +188,20 @@ export default class RideScreen extends Component {
       date: firebase.firestore.Timestamp.now().toDate(),
       transaction_type: "return"
     });
-    //change bike status
+    // mudar o status da bicicleta
     db.collection("bicycles")
       .doc(bikeId)
       .update({
         is_bike_available: true
       });
-    //change value  of bike assigned for user
+    // mudar o valor da bicicleta alugada pelo usuário
     db.collection("users")
       .doc(userId)
       .update({
         bike_assigned: false
       });
 
-    // Updating local state
+    // atualizando estado local
     this.setState({
       bikeId: ""
     });
